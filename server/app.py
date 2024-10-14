@@ -14,11 +14,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
 
 migrate = Migrate(app, db)
-
 db.init_app(app)
-
 api = Api(app)
-
 
 @app.route("/")
 def index():
@@ -35,10 +32,8 @@ def restaurants():
                 'address': restaurant.address
             }
             restaurants.append(restaurant_dict)
-        response = make_response(
-            jsonify(restaurants), 200
-        )
-        return response
+        return make_response(jsonify(restaurants), 200)
+    
     elif request.method == 'DELETE':
         Restaurant.query.delete()
         db.session.commit()
@@ -89,10 +84,7 @@ def get_pizzas():
             'name': pizza.name
         }
         pizzas.append(pizza_dict)
-    response = make_response(
-        jsonify(pizzas), 200
-    )
-    return response
+    return make_response(jsonify(pizzas), 200)
 
 @app.route('/restaurant_pizzas', methods=['POST'])
 def create_restaurant_pizza():
@@ -151,8 +143,6 @@ def create_restaurant_pizza():
         return make_response(jsonify({"errors": ["validation errors"]}), 400)
     except Exception as e:
         return make_response(jsonify({"errors": ["validation errors"]}), 400)
-
-
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
